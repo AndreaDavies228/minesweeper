@@ -234,7 +234,7 @@ while playing == True:
                 "A7", "B7", "C7", "D7", "E7", "F7","G7", "H7", "I7", "J7", "K7", "L7",
                 "A8", "B8", "C8", "D8", "E8", "F8","G8", "H8", "I8", "J8", "K8", "L8",
                 "A9", "B9", "C9", "D9", "E9", "F9","G9", "H9", "I9", "J9", "K9", "L9",
-                "A10", "B10", "C10", "D10", "E10", "F10","G10", "H10", "I0", "J10", "K10", "L10",
+                "A10", "B10", "C10", "D10", "E10", "F10","G10", "H10", "I10", "J10", "K10", "L10",
                 "A11", "B11", "C11", "D11", "E11", "F11","G11", "H11", "I11", "J11", "K11", "L11",
                 "A12", "B12", "C12", "D12", "E12", "F12","G12", "H12", "I12", "J12", "K12", "L12",
                 ]
@@ -244,13 +244,13 @@ while playing == True:
     print("The ⬤ symbol represents your cursor. Press the WASD keys to move. Press 'f' to place or remove a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit. Your timer starts now")
     start_time = time.time()
     if size == small:
-        initial_mines = random.randint(8,10)
+        initial_mines = random.randint(9,11)
         movement_value = 8
     if size == medium:
-        initial_mines = random.randint(10,12)
+        initial_mines = random.randint(12,15)
         movement_value = 10
     if size == large:
-        initial_mines = random.randint(12,14)
+        initial_mines = random.randint(16,20)
         movement_value = 12
     mines_remaining = initial_mines
     print(str(mines_remaining) + " mines to be found!")

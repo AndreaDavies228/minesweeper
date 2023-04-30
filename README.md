@@ -1,1 +1,2 @@
-# Minesweeper
+This is a game of minesweeper to be played in the terminal using the keyboard, created as part of my computer science course.
+There are three sizes of board to choose from, and the number of mines is randomised based on the size of the board.
