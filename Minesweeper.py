@@ -1,4 +1,100 @@
 import random
+import time
+
+
+def time_convert(sec):
+  #mins = sec // 60
+  #sec = sec % 60
+  #hours = mins // 60
+  #mins = mins % 60
+  #print("Time taken = {0}:{1}:{2}".format(int(hours),int(mins),sec))
+  print("You took {0} seconds.".format(int(sec)))
+
+def mine_test(position):
+    count = 0
+    if position - movement_value >= 0:
+        test1 = position - movement_value
+        if test1 in mines:
+            count += 1
+    if position - movement_value + 1 >= 0 and position % movement_value != (movement_value -1):
+        test2 = position - movement_value + 1
+        if test2 in mines:
+            count += 1
+    if position % movement_value != (movement_value -1):
+        test3 = position + 1
+        if test3 in mines:
+            count += 1
+    if position + movement_value + 1 < len(positions) and position % movement_value != (movement_value -1):
+        test4 = position + movement_value + 1
+        if test4 in mines:
+            count += 1
+    if position + movement_value < len(positions):
+        test5 = position + movement_value
+        if test5 in mines:
+            count += 1
+    if position + movement_value -1 < len(positions) and current_position % movement_value != 0:
+        test6 = position + movement_value - 1
+        if test6 in mines:
+            count += 1
+    if current_position % movement_value != 0:
+        test7 = position - 1
+        if test7 in mines:
+            count += 1
+    if position - movement_value - 1 >= 0 and current_position % movement_value != 0:
+        test8 = position - movement_value - 1
+        if test8 in mines:
+            count += 1
+    values[positions[current_position]] = str(count) + " "
+    return
+
+def movement(input):
+    global is_flag
+    global is_number
+    global current_position
+    print("number " + str(is_number) )
+    if is_flag == True:
+        values[positions[current_position]] = "☑ "
+    if is_number == True:
+        mine_test(current_position)
+    else:
+        if values[positions[current_position]] == "⬤ ":
+            values[positions[current_position]] = "☐ "
+    if input == "w":
+        if current_position - movement_value >= 0:
+            current_position -= movement_value
+        else:
+            current_position = (current_position + len(positions) - movement_value)
+    if input:
+        if input == "a":
+            if current_position % movement_value == 0:
+                current_position += (movement_value -1)
+            else:
+                current_position -= 1
+        if input == "s":
+            if current_position + movement_value < len(positions):
+                current_position += movement_value
+            else:
+                current_position = current_position % movement_value
+        if input == "d":
+            if current_position % movement_value == (movement_value -1):
+                current_position -= (movement_value - 1)
+            else:
+                current_position += 1
+    if values[positions[current_position]] == "☑ ":
+        is_flag = True
+        is_number = False
+        values[positions[current_position]] = "⬤ "
+        return
+    if values[positions[current_position]] == "☐ ":
+        is_flag = False
+        is_number = False
+        values[positions[current_position]] = "⬤ "
+        return
+    else:
+        is_flag = False
+        is_number = True
+        values[positions[current_position]] = "⬤ "
+    return
 
 #☑
 #☒
@@ -8,44 +104,8 @@ import random
 print("Welcome to Minesweeper.")
 playing = True
 while playing == True:
-    def mine_test(position):
-        count = 0
-        if position - movement_value >= 0:
-            test1 = position - movement_value
-            if test1 in mines:
-                count += 1
-        if position - movement_value + 1 >= 0 and position % movement_value != (movement_value -1):
-            test2 = position - movement_value + 1
-            if test2 in mines:
-                count += 1
-        if position % movement_value != (movement_value -1):
-            test3 = position + 1
-            if test3 in mines:
-                count += 1
-        if position + movement_value + 1 < len(positions) and position % movement_value != (movement_value -1):
-            test4 = position + movement_value + 1
-            if test4 in mines:
-                count += 1
-        if position + movement_value < len(positions):
-            test5 = position + movement_value
-            if test5 in mines:
-                count += 1
-        if position + movement_value -1 < len(positions) and current_position % movement_value != 0:
-            test6 = position + movement_value - 1
-            if test6 in mines:
-                count += 1
-        if current_position % movement_value != 0:
-            test7 = position - 1
-            if test7 in mines:
-                count += 1
-        if position - movement_value - 1 >= 0 and current_position % movement_value != 0:
-            test8 = position - movement_value - 1
-            if test8 in mines:
-                count += 1
-        return count
-
     size = False
-    values = {"A1": "☐ ", "B1": "☐ ", "C1": "☐ ", "D1": "☐ ", "E1": "☐ ", "F1": "☐ ", "G1": "☐ ", "H1": "☐ ", "I1": "☐ ", "J1": "☐ ", "K1": "☐ ", "L1": "☐ ",
+    default_values = {"A1": "☐ ", "B1": "☐ ", "C1": "☐ ", "D1": "☐ ", "E1": "☐ ", "F1": "☐ ", "G1": "☐ ", "H1": "☐ ", "I1": "☐ ", "J1": "☐ ", "K1": "☐ ", "L1": "☐ ",
             "A2": "☐ ", "B2": "☐ ", "C2": "☐ ", "D2": "☐ ", "E2": "☐ ", "F2": "☐ ", "G2": "☐ ", "H2": "☐ ", "I2": "☐ ", "J2": "☐ ", "K2": "☐ ", "L2": "☐ ",
             "A3": "☐ ", "B3": "☐ ", "C3": "☐ ", "D3": "☐ ", "E3": "☐ ", "F3": "☐ ", "G3": "☐ ", "H3": "☐ ", "I3": "☐ ", "J3": "☐ ", "K3": "☐ ", "L3": "☐ ",
             "A4": "☐ ", "B4": "☐ ", "C4": "☐ ", "D4": "☐ ", "E4": "☐ ", "F4": "☐ ", "G4": "☐ ", "H4": "☐ ", "I4": "☐ ", "J4": "☐ ", "K4": "☐ ", "L4": "☐ ",
@@ -57,6 +117,7 @@ while playing == True:
             "A10": "☐ ", "B10": "☐ ", "C10": "☐ ", "D10": "☐ ", "E10": "☐ ", "F10": "☐ ", "G10": "☐ ", "H10": "☐ ", "I10": "☐ ", "J10": "☐ ", "K10": "☐ ", "L10": "☐ ",
             "A11": "☐ ", "B11": "☐ ", "C11": "☐ ", "D11": "☐ ", "E11": "☐ ", "F11": "☐ ", "G11": "☐ ", "H11": "☐ ", "I11": "☐ ", "J11": "☐ ", "K11": "☐ ", "L11": "☐ ",
             "A12": "☐ ", "B12": "☐ ", "C12": "☐ ", "D12": "☐ ", "E12": "☐ ", "F12": "☐ ", "G12": "☐ ", "H12": "☐ ", "I12": "☐ ", "J12": "☐ ", "K12": "☐ ", "L12": "☐ "}
+    values = default_values
     small = """
     {A1} {B1} {C1} {D1} {E1} {F1} {G1} {H1}
     {A2} {B2} {C2} {D2} {E2} {F2} {G2} {H2}
@@ -143,120 +204,170 @@ while playing == True:
     current_position = 0
     print(size.format(**values))
     board = size
-    print("The ⬤ symbol represents your cursor. Press the WASD keys to move. Press 'f' to place a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit.")
+    print("The ⬤ symbol represents your cursor. Press the WASD keys to move. Press 'f' to place or remove a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit. Your timer starts now")
+    start_time = time.time()
     if size == small:
-        mines_remaining = random.randint(7,9)
+        #initial_mines = random.randint(7,9)
+        initial_mines = 1
         movement_value = 8
     if size == medium:
-        mines_remaining = random.randint(9,11)
+        ninitial_mines = random.randint(9,11)
         movement_value = 10
     if size == large:
-        mines_remaining = random.randint(11,13)
+        initial_mines = random.randint(11,13)
         movement_value = 12
+    mines_remaining = initial_mines
     print(str(mines_remaining) + " mines to be found!")
-    mines = random.sample(range(0, len(positions)), mines_remaining)
+    #mines = random.sample(range(0, len(positions)), mines_remaining)
+    mines = [1]
     print(mines)
     is_flag = False
-    while mines_remaining > 0:
-        action = input("What would you like to do?")
-        if action == "w" or action == "w" or action == "a" or action == "s" or action == "d" or action == "f" or action == "e" or action == "q":
-            if action == "w":
-                if is_flag == True:
-                    values[positions[current_position]] = "☑ "
-                else:
-                    if values[positions[current_position]] == "⬤ ":
-                        values[positions[current_position]] = "☐ "
-                if current_position - movement_value >= 0:
-                    current_position -= movement_value
-                else:
-                    current_position = (current_position + len(positions) - movement_value)
-                if values[positions[current_position]] == "☑ ":
-                    is_flag = True
-                    values[positions[current_position]] = "⬤ "
-                else:
-                    is_flag = False
-                    values[positions[current_position]] = "⬤ "
-                print(board.format(**values))
-                print(current_position)
-            if action == "a":
-                if is_flag == True:
-                    values[positions[current_position]] = "☑ "
-                else:
-                    if values[positions[current_position]] == "⬤ ":
-                        values[positions[current_position]] = "☐ "
+    is_number = False
+    flag_count = 0
+    reset = False
+
+    def movement(input):
+        global is_flag
+        global is_number
+        global current_position
+        print("number " + str(is_number) )
+        if is_flag == True:
+            values[positions[current_position]] = "☑ "
+        if is_number == True:
+            mine_test(current_position)
+        else:
+            if values[positions[current_position]] == "⬤ ":
+                values[positions[current_position]] = "☐ "
+        if input == "w":
+            if current_position - movement_value >= 0:
+                current_position -= movement_value
+            else:
+                current_position = (current_position + len(positions) - movement_value)
+        if input:
+            if input == "a":
                 if current_position % movement_value == 0:
                     current_position += (movement_value -1)
                 else:
                     current_position -= 1
-                if values[positions[current_position]] == "☑ ":
-                    is_flag = True
-                    values[positions[current_position]] = "⬤ "
-                else:
-                    is_flag = False
-                    values[positions[current_position]] = "⬤ "
-                print(board.format(**values))
-                print(current_position)
-            if action == "s":
-                if is_flag == True:
-                    values[positions[current_position]] = "☑ "
-                else:
-                    if values[positions[current_position]] == "⬤ ":
-                        values[positions[current_position]] = "☐ "
+            if input == "s":
                 if current_position + movement_value < len(positions):
                     current_position += movement_value
                 else:
                     current_position = current_position % movement_value
-                if values[positions[current_position]] == "☑ ":
-                    is_flag = True
-                    values[positions[current_position]] = "⬤ "
-                else:
-                    is_flag = False
-                    values[positions[current_position]] = "⬤ "
-                print(board.format(**values))
-                print(current_position)
-            if action == "d":
-                if is_flag == True:
-                    values[positions[current_position]] = "☑ "
-                else:
-                    if values[positions[current_position]] == "⬤ ":
-                        values[positions[current_position]] = "☐ "
+            if input == "d":
                 if current_position % movement_value == (movement_value -1):
                     current_position -= (movement_value - 1)
                 else:
                     current_position += 1
-                if values[positions[current_position]] == "☑ ":
-                    is_flag = True
-                    values[positions[current_position]] = "⬤ "
-                else:
-                    is_flag = False
-                    values[positions[current_position]] = "⬤ "
-                print(board.format(**values))
-                print(current_position)
-            if action == "f":
-                values[positions[current_position]] = "☑ "
-                print(board.format(**values))
-            if action == "e":
-                if current_position in mines:
-                    print("That's a mine! You lost!")
-                    again = input("Do you want to play again?")
-                    if again == "y":
-                        break
-                    if again == "n":
-                        print("Thank you for playing!")
-                        exit()
-                count = mine_test(current_position)
-                values[positions[current_position]] = count
-                print(board.format(**values))
-                print(str(count) + "  ")
-            if action == "q":
-                print("Are you sure you want to quit?")
-                quit = input("Press 'y' or 'n'.")
-                if quit == "y":
-                    exit()
-                if quit == "n":
-                    print("Okay, you can keep playing.")
-                else:
-                    print("Invalid input.")
+        if values[positions[current_position]] == "☑ ":
+            is_flag = True
+            is_number = False
+            values[positions[current_position]] = "⬤ "
+            return
+        if values[positions[current_position]] == "☐ ":
+            is_flag = False
+            is_number = False
+            values[positions[current_position]] = "⬤ "
+            return
         else:
-            print("Invalid input. Please press 'w', 'a', 's', 'd', 'f','e' or 'q'.")      
+            is_flag = False
+            is_number = True
+            values[positions[current_position]] = "⬤ "
+        return
+
+    while reset == False:
+        while flag_count != initial_mines or mines_remaining > 0:
+            #print("Reset: " +str(reset))
+            #print("Mines remaining: " + str(mines_remaining))
+            action = input("What would you like to do?")
+            if action == "w" or action == "w" or action == "a" or action == "s" or action == "d" or action == "f" or action == "e" or action == "q":
+                if action == "w":
+                    movement("w")
+                    print(board.format(**values))
+                    #print(current_position)
+                if action == "a":
+                    movement("a")
+                    print(board.format(**values))
+                    #print(current_position)
+                if action == "s":
+                    movement("s")
+                    print(board.format(**values))
+                    #print(current_position)
+                if action == "d":
+                    movement("d")
+                    print(board.format(**values))
+                    #print(current_position)
+            
+                if action == "f":
+                    if is_flag == True:
+                        if current_position in mines:
+                            mines_remaining += 1
+                        flag_count -= 1
+                        is_flag = False
+                    else:
+                        values[positions[current_position]] = "☑ "
+                        if current_position in mines:
+                            mines_remaining -= 1
+                        flag_count += 1
+                        is_number = False
+                    print(board.format(**values))
+                
+                if action == "e":
+                    if current_position in mines:
+                        end_time = time.time()
+                        time_lapsed = end_time - start_time
+                        print("That's a mine! You lost!")
+                        time_convert(time_lapsed)
+                        waiting_input = True
+                        while waiting_input == True:
+                            again = input("Do you want to play again?")
+                            if again == "y":
+                                waiting_input = False
+                                values = default_values
+                                size = False
+                                reset = True
+                                break
+                            if again == "n":
+                                print("Thank you for playing!")
+                                exit()
+                            else:
+                                print("Invalid input.")
+                        break
+                    mine_test(current_position)
+                    print(board.format(**values))
+                    
+                if action == "q":
+                    print("Are you sure you want to quit?")
+                    waiting_input = True
+                    while waiting_input == True:
+                        quit = input("Press 'y' or 'n'.")
+                        if quit == "y":
+                            print("Thank you for playing!")
+                            exit()
+                        if quit == "n":
+                            print("Okay, you can keep playing.")
+                            waiting_input = False
+                        else:
+                            print("Invalid input.")
+            else:
+                print("Invalid input. Please press 'w', 'a', 's', 'd', 'f','e' or 'q'.") 
+    if reset == False:
+        print("Congratulations, you cleared the board!")
+        end_time = time.time()
+        time_lapsed = end_time - start_time
+        time_convert(time_lapsed)
+        waiting_input = True
+        while waiting_input == True:
+            again = input("Do you want to play again? Press 'y' or 'n'.")
+            if again == "y":
+                print("Have fun!")
+                values = default_values
+                waiting_input = False
+                size = False
+                break
+            if again == "n":
+                print("Thank you for playing!")
+                exit()
+            else:
+                print("Invalid input")
         
