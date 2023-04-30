@@ -10,7 +10,7 @@ This terminal game was created as my python programming project, as part of my C
 
 ## Sample Image
 
-![Alt text](../../Desktop/Minesweeper.jpg)
+![Image of Minesweeper game in progress](https://github.com/AndreaDavies228/Minesweeper/blob/main/Minesweeper.jpg)
 
 ## Author
 
