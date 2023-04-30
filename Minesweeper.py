@@ -12,6 +12,15 @@ def time_convert(sec):
 
 def mine_test(position):
     count = 0
+    test1 = False
+    test2 = False
+    test3 = False
+    test4 = False
+    test5 = False
+    test6 = False
+    test7 = False
+    test8 = False
+    
     if position - movement_value >= 0:
         test1 = position - movement_value
         if test1 in mines:
@@ -32,20 +41,65 @@ def mine_test(position):
         test5 = position + movement_value
         if test5 in mines:
             count += 1
-    if position + movement_value -1 < len(positions) and current_position % movement_value != 0:
-        test6 = position + movement_value - 1
+    if position + movement_value -1 < len(positions) and (position % movement_value != 0 and position >= 0):
+        test6 = (position + movement_value - 1)
         if test6 in mines:
             count += 1
-    if current_position % movement_value != 0:
-        test7 = position - 1
+    if position % movement_value != 0 and position >= 0:
+        test7 = (position - 1)
         if test7 in mines:
             count += 1
-    if position - movement_value - 1 >= 0 and current_position % movement_value != 0:
-        test8 = position - movement_value - 1
+    if position - movement_value - 1 >= 0 and (position % movement_value != 0 and position >= 0):
+        test8 = (position - movement_value - 1)
         if test8 in mines:
             count += 1
-    values[positions[current_position]] = str(count) + " "
+    values[positions[position]] = str(count) + " "
+    if count > 0:
+        return    
+
+    else:
+        #tiles_to_check = []
+        
+        if test1 is not False:
+            if values[positions[test1]] == "☐ ":
+                mine_test(test1)
+                #tiles_to_check.append(test1)
+        if test2 is not False:
+            if values[positions[test2]] == "☐ ":
+                mine_test(test2)
+                #tiles_to_check.append(test2)
+        if test3 is not False:
+            if values[positions[test3]] == "☐ ":
+                mine_test(test3)
+                #tiles_to_check.append(test3)
+        if test4 is not False:
+            if values[positions[test4]] == "☐ ":
+                mine_test(test4)
+                #tiles_to_check.append(test4)
+        if test5 is not False:
+            if values[positions[test5]] == "☐ ":
+                mine_test(test5)
+                #tiles_to_check.append(test5)
+        if test6 is not False:
+            if values[positions[test6]] == "☐ ":
+                mine_test(test6)
+                #tiles_to_check.append(test6)
+        if test7:
+            if values[positions[test7]] == "☐ ":
+                mine_test(test7)
+                #tiles_to_check.append(test7)
+        if test8 is not False:
+            if values[positions[test8]] == "☐ ":
+                mine_test(test8)
+                #tiles_to_check.append(test8)
+        #print(tiles_to_check)
+        #while len(tiles_to_check) >0:
+        #    for tile in tiles_to_check:
+        #        print(tiles_to_check)
+        #        print(tile)
+                
     return
+
 
 def movement(input):
     global is_flag
@@ -207,73 +261,25 @@ while playing == True:
     print("The ⬤ symbol represents your cursor. Press the WASD keys to move. Press 'f' to place or remove a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit. Your timer starts now")
     start_time = time.time()
     if size == small:
-        #initial_mines = random.randint(7,9)
-        initial_mines = 1
+        initial_mines = random.randint(7,9)
+        #initial_mines = 4
         movement_value = 8
     if size == medium:
-        ninitial_mines = random.randint(9,11)
+        initial_mines = random.randint(9,11)
+        #initial_mines = 4
         movement_value = 10
     if size == large:
         initial_mines = random.randint(11,13)
         movement_value = 12
     mines_remaining = initial_mines
     print(str(mines_remaining) + " mines to be found!")
-    #mines = random.sample(range(0, len(positions)), mines_remaining)
-    mines = [1]
+    mines = random.sample(range(0, len(positions)), mines_remaining)
+    #mines = [35, 36, 40, 48]
     print(mines)
     is_flag = False
     is_number = False
     flag_count = 0
     reset = False
-
-    def movement(input):
-        global is_flag
-        global is_number
-        global current_position
-        print("number " + str(is_number) )
-        if is_flag == True:
-            values[positions[current_position]] = "☑ "
-        if is_number == True:
-            mine_test(current_position)
-        else:
-            if values[positions[current_position]] == "⬤ ":
-                values[positions[current_position]] = "☐ "
-        if input == "w":
-            if current_position - movement_value >= 0:
-                current_position -= movement_value
-            else:
-                current_position = (current_position + len(positions) - movement_value)
-        if input:
-            if input == "a":
-                if current_position % movement_value == 0:
-                    current_position += (movement_value -1)
-                else:
-                    current_position -= 1
-            if input == "s":
-                if current_position + movement_value < len(positions):
-                    current_position += movement_value
-                else:
-                    current_position = current_position % movement_value
-            if input == "d":
-                if current_position % movement_value == (movement_value -1):
-                    current_position -= (movement_value - 1)
-                else:
-                    current_position += 1
-        if values[positions[current_position]] == "☑ ":
-            is_flag = True
-            is_number = False
-            values[positions[current_position]] = "⬤ "
-            return
-        if values[positions[current_position]] == "☐ ":
-            is_flag = False
-            is_number = False
-            values[positions[current_position]] = "⬤ "
-            return
-        else:
-            is_flag = False
-            is_number = True
-            values[positions[current_position]] = "⬤ "
-        return
 
     while reset == False:
         while flag_count != initial_mines or mines_remaining > 0:
@@ -351,23 +357,24 @@ while playing == True:
                             print("Invalid input.")
             else:
                 print("Invalid input. Please press 'w', 'a', 's', 'd', 'f','e' or 'q'.") 
-    if reset == False:
-        print("Congratulations, you cleared the board!")
-        end_time = time.time()
-        time_lapsed = end_time - start_time
-        time_convert(time_lapsed)
-        waiting_input = True
-        while waiting_input == True:
-            again = input("Do you want to play again? Press 'y' or 'n'.")
-            if again == "y":
-                print("Have fun!")
-                values = default_values
-                waiting_input = False
-                size = False
-                break
-            if again == "n":
-                print("Thank you for playing!")
-                exit()
-            else:
-                print("Invalid input")
+        if reset == False:
+            print("Congratulations, you cleared the board!")
+            end_time = time.time()
+            time_lapsed = end_time - start_time
+            time_convert(time_lapsed)
+            waiting_input = True
+            while waiting_input == True:
+                again = input("Do you want to play again? Press 'y' or 'n'.")
+                if again == "y":
+                    print("Have fun!")
+                    values = default_values
+                    waiting_input = False
+                    size = False
+                    reset = True
+                    break
+                if again == "n":
+                    print("Thank you for playing!")
+                    exit()
+                else:
+                    print("Invalid input")
         
