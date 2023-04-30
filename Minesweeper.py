@@ -101,7 +101,6 @@ def movement(input):
     global is_flag
     global is_number
     global current_position
-    print("number " + str(is_number) )
     if is_flag == True:
         values[positions[current_position]] = "☑ "
     if is_number == True:
