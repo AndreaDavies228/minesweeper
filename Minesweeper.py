@@ -1,6 +1,19 @@
 import random
 import time
 
+def play_again():
+    waiting_input = True
+    while waiting_input == True:
+        again = input("Do you want to play again?")
+        if again == "y":
+            waiting_input = False
+            break
+        if again == "n":
+            print("Thank you for playing!")
+            exit()
+        else:
+            print("Invalid input.")
+
 def mine_test(position):
     count = 0
     test1 = False
@@ -241,7 +254,7 @@ while playing == True:
     current_position = 0
     print(size.format(**values))
     board = size
-    print("The ⬤ symbol represents your cursor. Press the WASD keys to move. Press 'f' to place or remove a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit. Your timer starts now")
+    print("The ⬤ symbol represents your cursor. Press the WASD keys to move. Press 'f' to place or remove a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit. Your timer starts now.")
     start_time = time.time()
     if size == small:
         initial_mines = random.randint(9,11)
@@ -305,20 +318,8 @@ while playing == True:
                         print(board.format(**values))
                         print("That's a mine! You lost!")
                         print("You took {0} seconds.".format(int(time_lapsed)))
-                        waiting_input = True
-                        while waiting_input == True:
-                            again = input("Do you want to play again?")
-                            if again == "y":
-                                waiting_input = False
-                                values = default_values
-                                size = False
-                                reset = True
-                                break
-                            if again == "n":
-                                print("Thank you for playing!")
-                                exit()
-                            else:
-                                print("Invalid input.")
+                        play_again()
+                        reset = True
                         break
                     mine_test(current_position)
                     print(board.format(**values))
@@ -343,19 +344,6 @@ while playing == True:
             end_time = time.time()
             time_lapsed = end_time - start_time
             print("You took {0} seconds.".format(int(time_lapsed)))
-            waiting_input = True
-            while waiting_input == True:
-                again = input("Do you want to play again? Press 'y' or 'n'.")
-                if again == "y":
-                    print("Have fun!")
-                    values = default_values
-                    waiting_input = False
-                    size = False
-                    reset = True
-                    break
-                if again == "n":
-                    print("Thank you for playing!")
-                    exit()
-                else:
-                    print("Invalid input")
+            play_again()
+
         
