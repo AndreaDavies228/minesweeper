@@ -304,6 +304,7 @@ while playing == True:
                             mines_remaining += 1
                         flag_count -= 1
                         is_flag = False
+                        values[positions[current_position]] = "☐ "
                         print(board.format(**values))
                     elif is_number == False:
                         values[positions[current_position]] = "☑ "
