@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import random
 import time
 
@@ -10,6 +12,7 @@ def play_again():
             break
         if again == "n":
             print("Thank you for playing!")
+            print("You can donate here to support real life mine clearing operations: https://donorbox.org/halo_trust_ukraine_appeal ")
             exit()
         else:
             print("Invalid input.")
@@ -201,7 +204,7 @@ while playing == True:
     {A11} {B11} {C11} {D11} {E11} {F11} {G11} {H11} {I11} {J11} {K11} {L11}
     {A12} {B12} {C12} {D12} {E12} {F12} {G12} {H12} {I12} {J12} {K12} {L12}"""
     while size == False:
-        board_size = input("Please select your game size: Small, Medium, or Large")
+        board_size = input("Please press 's', 'm' or 'l' to select your game size: Small, Medium, or Large ")
         if board_size == "Small" or board_size == "small" or board_size == "S" or board_size == "s":
             size = small
             print("Small board size set.")
@@ -253,7 +256,7 @@ while playing == True:
     current_position = 0
     print(size.format(**values))
     board = size
-    print("The ⬤ symbol represents your cursor. Press the WASD keys to move. Press 'f' to place or remove a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit. Your timer starts now.")
+    print("The ⬤  symbol represents your cursor. Press the WASD keys to move. Press 'f' to place or remove a flag. Press 'e' to examine. If you examine a tile with a mine, you lose the game. Press 'q' to quit. Your timer starts now.")
     start_time = time.time()
     if size == small:
         initial_mines = random.randint(9,11)
@@ -301,16 +304,25 @@ while playing == True:
                             mines_remaining += 1
                         flag_count -= 1
                         is_flag = False
-                    else:
+                        print(board.format(**values))
+                    elif is_number == False:
                         values[positions[current_position]] = "☑ "
                         if current_position in mines:
                             mines_remaining -= 1
                         flag_count += 1
                         is_number = False
-                    print(board.format(**values))
+                        is_flag = True
+                        print(board.format(**values))
+                    else:
+                        print("Already examined. Please select a different tile.")
+                    
                 
                 if action == "e":
-                    if current_position in mines:
+                    if is_flag == True:
+                        print("This tile has been flagged. Please remove the flag before examining.")
+                    elif is_number == True:
+                        print("Already examined. Please select a different tile.")
+                    elif current_position in mines:
                         values[positions[current_position]] = "☒ "
                         end_time = time.time()
                         time_lapsed = end_time - start_time
@@ -320,8 +332,10 @@ while playing == True:
                         play_again()
                         reset = True
                         break
-                    mine_test(current_position)
-                    print(board.format(**values))
+                    else:
+                        is_number = True
+                        mine_test(current_position)
+                        print(board.format(**values))
                     
                 if action == "q":
                     print("Are you sure you want to quit?")
@@ -343,6 +357,8 @@ while playing == True:
             end_time = time.time()
             time_lapsed = end_time - start_time
             print("You took {0} seconds.".format(int(time_lapsed)))
+            size = False
+            reset = True
             play_again()
 
         
